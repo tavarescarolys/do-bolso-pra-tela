@@ -184,6 +184,10 @@
   .js .hero #hero-title{visibility:hidden;}
   .js .hero .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;}
   .js .hero .reveal.revealed{opacity:1;transform:none;}
+
+  /* ---- Site-wide scroll-in cascade (JS-gated) ---- */
+  .js .reveal-io{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+  .js .reveal-io.revealed{opacity:1;transform:none;}
   .hero h1 .caret{display:inline-block;width:.05em;height:.8em;background:var(--blood-bright);margin-left:.06em;vertical-align:-0.08em;animation:caret-blink .8s steps(1) infinite;}
   @keyframes caret-blink{50%{opacity:0;}}
   .hero-ctas .btn:not(.ghost){animation:cta-pulse 2.6s ease-in-out infinite;}
@@ -217,10 +221,26 @@
 
   /* ---- Bastidores (video) ---- */
   .backstage{padding:96px 0;}
-  .backstage-video{max-width:420px;margin:0 auto;}
-  .backstage-video .frame{padding:4px;background:var(--ink-raised);}
-  .backstage-video video{width:100%;max-height:640px;display:block;background:#000;}
-  .backstage-video figcaption{text-align:center;margin-top:16px;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.04em;color:var(--ash-dim);}
+  .backstage-videos{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:720px;margin:0 auto;}
+  .video-card .frame{padding:4px;background:var(--ink-raised);position:relative;}
+  .video-card video{width:100%;max-height:640px;display:block;background:#000;}
+  @media (max-width:700px){ .backstage-videos{grid-template-columns:1fr;max-width:420px;} }
+
+  /* ---- Custom centered play button ---- */
+  .play-overlay{
+    position:absolute;inset:4px;display:flex;align-items:center;justify-content:center;
+    background:rgba(23,21,26,.28);border:none;padding:0;cursor:pointer;
+    transition:opacity .25s ease;
+  }
+  .play-overlay .circle{
+    width:60px;height:60px;border-radius:50%;
+    background:rgba(23,21,26,.75);border:2px solid var(--blood-bright);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .15s ease;
+  }
+  .play-overlay:hover .circle{transform:scale(1.08);}
+  .play-overlay svg{width:20px;height:20px;fill:#fff;margin-left:3px;}
+  .video-card.playing .play-overlay{opacity:0;pointer-events:none;}
 
   /* ---- Social proof ---- */
   .proof{padding:100px 0 110px;}
@@ -236,14 +256,14 @@
   .facilitator-row.reverse{grid-template-columns:auto 1fr;}
   .facilitator-row:last-child{border-bottom:none;padding-bottom:0;}
   .facilitator-row:first-child{padding-top:0;}
-  .facil-photo img{width:200px;max-width:100%;aspect-ratio:4/5;object-fit:cover;display:block;border:1px solid var(--ink-line);}
+  .facil-photo img{width:260px;max-width:100%;aspect-ratio:4/5;object-fit:cover;display:block;border:1px solid var(--ink-line);}
   .facil-text .role{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--blood-bright);margin-top:10px;margin-bottom:18px;display:block;}
   .facil-text h3{font-family:var(--font-feature);font-weight:800;font-size:clamp(2.1rem,5vw,3.2rem);line-height:.96;color:var(--text);}
   .facil-text p.bio{color:var(--ash);font-size:1rem;max-width:34em;}
   @media (max-width:700px){
     .facilitator-row,.facilitator-row.reverse{grid-template-columns:1fr;gap:22px;}
     .facil-photo{order:-1;}
-    .facil-photo img{width:150px;}
+    .facil-photo img{width:195px;}
   }
 
   /* ---- Pricing ---- */
@@ -257,7 +277,7 @@
   .price-card ul{list-style:none;margin-bottom:28px;flex:1;}
   .price-card li{padding-left:1.3em;position:relative;margin-bottom:10px;font-size:.95rem;color:var(--ash);}
   .price-card li::before{content:"—";position:absolute;left:0;color:var(--blood-bright);}
-  .price-card .btn{justify-content:center;width:100%;}
+  .price-card .btn{justify-content:center;width:100%;animation:cta-pulse 2.6s ease-in-out infinite;}
 
   /* ---- FAQ ---- */
   .faq{padding:96px 0;}
@@ -342,24 +362,24 @@
 
 <section class="pain">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head reveal-io">
       <div class="tag"><span class="rec-dot"></span> Reconhece essa cena?</div>
       <h2 class="display">Esse workshop é pra você que…</h2>
     </div>
-    <div class="pain-grid">
-      <div class="pain-item">
+    <div class="pain-grid stagger-group">
+      <div class="pain-item reveal-io">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="13" height="11" rx="2"/><circle cx="9.5" cy="12.5" r="2.6"/><path d="M16 10.5l5-2.8v9.6l-5-2.8"/></svg>
         Trava na frente da câmera e não sabe o que falar
       </div>
-      <div class="pain-item">
+      <div class="pain-item reveal-io">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 13.6-5.7L20 8.5"/><path d="M20 4.5v4h-4"/><path d="M20 12a8 8 0 0 1-13.6 5.7L4 15.5"/><path d="M4 19.5v-4h4"/></svg>
         Grava dez vezes e ainda acha que não ficou bom
       </div>
-      <div class="pain-item">
+      <div class="pain-item reveal-io">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0-3.4 10.9c.5.4.8.9.8 1.5v.6h5.2v-.6c0-.6.3-1.1.8-1.5A6 6 0 0 0 12 3z"/><path d="M9.8 19h4.4M10.5 21.2h3"/></svg>
         Comprou equipamento e o vídeo continua sem parecer profissional
       </div>
-      <div class="pain-item">
+      <div class="pain-item reveal-io">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
         Fica adiando porque nunca parece o momento certo
       </div>
@@ -369,12 +389,12 @@
 
 <section class="learn" id="aprender">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head reveal-io">
       <div class="tag">Conteúdo</div>
       <h2 class="display">O que você vai aprender</h2>
     </div>
-    <div class="moments">
-      <div class="moment">
+    <div class="moments stagger-group">
+      <div class="moment reveal-io">
         <span class="num">MOMENTO 01 // TEORIA NA PRÁTICA</span>
         <h3>Domine o olhar antes da lente</h3>
         <ul>
@@ -388,7 +408,7 @@
           </li>
         </ul>
       </div>
-      <div class="moment">
+      <div class="moment reveal-io">
         <span class="num">MOMENTO 02 // MÃO NA MASSA</span>
         <h3>Monte, ajuste e grave de verdade</h3>
         <ul>
@@ -407,7 +427,7 @@
         </ul>
       </div>
     </div>
-    <div class="bonus">
+    <div class="bonus reveal-io">
       <div class="txt">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
         <div>
@@ -421,44 +441,58 @@
 
 <section class="backstage">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head reveal-io">
       <div class="tag"><span class="rec-dot"></span> Bastidores</div>
       <h2 class="display">Por dentro do Bolso pra Tela</h2>
     </div>
-    <figure class="backstage-video">
-      <div class="frame">
-        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-        <video controls playsinline preload="metadata" src="assets/video/bastidores-1a-edicao.mp4"></video>
+    <div class="backstage-videos stagger-group">
+      <div class="video-card reveal-io">
+        <div class="frame">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <video controls playsinline preload="metadata" src="assets/video/bastidores-1a-edicao.mp4"></video>
+          <button class="play-overlay" type="button" aria-label="Reproduzir vídeo">
+            <span class="circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+        </div>
       </div>
-    </figure>
+      <div class="video-card reveal-io">
+        <div class="frame">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <video controls playsinline preload="metadata" src="assets/video/depoimento-jailane.mp4"></video>
+          <button class="play-overlay" type="button" aria-label="Reproduzir vídeo">
+            <span class="circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="proof" id="depoimentos">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head reveal-io">
       <div class="tag"><span class="rec-dot"></span> O que falam do nosso workshop</div>
       <h2 class="display">Quem participou conta como foi</h2>
     </div>
-    <div class="testi-grid">
-      <figure class="testi-card">
+    <div class="testi-grid stagger-group">
+      <figure class="testi-card reveal-io">
         <div class="frame"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
           <img src="assets/img/depoimento-aida.png" alt="Depoimento de Aída no WhatsApp agradecendo pelo workshop">
         </div>
       </figure>
-      <figure class="testi-card">
+      <figure class="testi-card reveal-io">
         <div class="frame"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
           <img src="assets/img/depoimento-2.jpg" alt="Depoimento de aluna no WhatsApp sobre o olhar técnico do Lucio">
         </div>
       </figure>
-      <figure class="testi-card">
+      <figure class="testi-card reveal-io">
         <div class="frame"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
           <img src="assets/img/depoimento-3.jpg" alt="Depoimento de aluna no WhatsApp dizendo que o curso foi a chave que faltava">
         </div>
       </figure>
-      <figure class="testi-card">
+      <figure class="testi-card reveal-io">
         <div class="frame"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <video controls playsinline preload="metadata" src="assets/video/depoimento-jailane.mp4"></video>
+          <img src="assets/img/depoimento-4.jpg" alt="Comentário de jailane_mktdigital no Instagram elogiando o workshop">
         </div>
       </figure>
     </div>
@@ -467,13 +501,13 @@
 
 <section class="teach" id="facilitadores">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head reveal-io">
       <div class="tag">Quem ensina</div>
       <h2 class="display">Dois olhares, um só objetivo</h2>
       <p>Comunicação e imagem de quem vive disso todos os dias.</p>
     </div>
 
-    <div class="facilitator-row">
+    <div class="facilitator-row reveal-io">
       <div class="facil-text">
         <h3>Carolys Tavares</h3>
         <span class="role">Design &amp; comunicação</span>
@@ -482,7 +516,7 @@
       <div class="facil-photo"><img src="assets/img/carolys.jpg" alt="Carolys Tavares"></div>
     </div>
 
-    <div class="facilitator-row reverse">
+    <div class="facilitator-row reverse reveal-io">
       <div class="facil-photo"><img src="assets/img/lucio.jpg" alt="Lucio Tavares"></div>
       <div class="facil-text">
         <h3>Lucio Tavares</h3>
@@ -495,12 +529,12 @@
 
 <section class="price" id="investimento">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head reveal-io">
       <div class="tag"><span class="rec-dot"></span> Investimento</div>
       <h2 class="display">Garanta sua vaga</h2>
     </div>
-    <div class="price-grid">
-      <div class="price-card">
+    <div class="price-grid stagger-group">
+      <div class="price-card reveal-io">
         <span class="plan-name">Individual</span>
         <span class="amount">R$277</span>
         <span class="per">por pessoa</span>
@@ -511,7 +545,7 @@
         </ul>
         <a class="btn" href="https://loja.infinitepay.io/carolystavares/tlf9600-workshop-do-bolso-pra-tela" target="_blank" rel="noopener">Quero minha vaga</a>
       </div>
-      <div class="price-card featured">
+      <div class="price-card featured reveal-io">
         <span class="plan-name">Dupla</span>
         <span class="amount">R$460</span>
         <span class="per">R$230 por pessoa</span>
@@ -528,24 +562,24 @@
 
 <section class="faq" id="faq">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head reveal-io">
       <div class="tag">Dúvidas</div>
       <h2 class="display">Perguntas frequentes</h2>
     </div>
-    <div class="faq-list">
-      <details class="faq-item">
+    <div class="faq-list stagger-group">
+      <details class="faq-item reveal-io">
         <summary>Preciso de equipamento?</summary>
         <div class="a">Não. Só o celular. A gente trabalha com o que você já tem na mão.</div>
       </details>
-      <details class="faq-item">
+      <details class="faq-item reveal-io">
         <summary>Nunca gravei. É pra mim?</summary>
         <div class="a">Sim! O workshop serve tanto pra quem nunca gravou e quer começar, quanto pra quem já grava e quer melhorar a qualidade.</div>
       </details>
-      <details class="faq-item">
+      <details class="faq-item reveal-io">
         <summary>Ensina edição?</summary>
         <div class="a">O foco é na gravação — enquadramento, iluminação e roteiro. Mas a gente compartilha tutoriais de edição como suporte.</div>
       </details>
-      <details class="faq-item">
+      <details class="faq-item reveal-io">
         <summary>Onde vai ser?</summary>
         <div class="a">Av. Aguanambi, 760 – sala 101, Fortaleza.</div>
       </details>
@@ -554,7 +588,7 @@
 </section>
 
 <section class="final-cta">
-  <div class="wrap">
+  <div class="wrap reveal-io">
     <h2 class="display">Vagas limitadas.<br>Garanta a sua agora.</h2>
     <p class="lede">12 de setembro, das 14h às 19h — Fortaleza.</p>
     <p class="when">AV. AGUANAMBI, 760 — SALA 101</p>
@@ -714,5 +748,46 @@
     };
     typeStep();
   }, 300);
+})();
+</script>
+
+<script>
+(function(){
+  // Staggered scroll-in reveal for cards/lists across the site
+  var groups = document.querySelectorAll('.stagger-group');
+  groups.forEach(function(group){
+    var items = group.querySelectorAll(':scope > .reveal-io');
+    items.forEach(function(el, i){ el.style.transitionDelay = (i * 90) + 'ms'; });
+  });
+
+  var targets = document.querySelectorAll('.reveal-io');
+  if('IntersectionObserver' in window && targets.length){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.15, rootMargin: '0px 0px -60px 0px'});
+    targets.forEach(function(el){ io.observe(el); });
+  } else {
+    targets.forEach(function(el){ el.classList.add('revealed'); });
+  }
+})();
+</script>
+
+<script>
+(function(){
+  // Custom centered play button for grouped videos
+  document.querySelectorAll('.video-card').forEach(function(card){
+    var video = card.querySelector('video');
+    var overlay = card.querySelector('.play-overlay');
+    if(!video || !overlay) return;
+    overlay.addEventListener('click', function(){ video.play(); });
+    video.addEventListener('play', function(){ card.classList.add('playing'); });
+    video.addEventListener('pause', function(){ card.classList.remove('playing'); });
+    video.addEventListener('ended', function(){ card.classList.remove('playing'); });
+  });
 })();
 </script>
