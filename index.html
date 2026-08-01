@@ -180,6 +180,15 @@
   .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
   .hero-ctas .note{font-family:var(--font-mono);font-size:.74rem;color:var(--ash-dim);letter-spacing:.03em;}
 
+  /* ---- Hero entrance animation (progressive enhancement, JS-gated) ---- */
+  .js .hero #hero-title{visibility:hidden;}
+  .js .hero .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;}
+  .js .hero .reveal.revealed{opacity:1;transform:none;}
+  .hero h1 .caret{display:inline-block;width:.05em;height:.8em;background:var(--blood-bright);margin-left:.06em;vertical-align:-0.08em;animation:caret-blink .8s steps(1) infinite;}
+  @keyframes caret-blink{50%{opacity:0;}}
+  .hero-ctas .btn:not(.ghost){animation:cta-pulse 2.6s ease-in-out infinite;}
+  @keyframes cta-pulse{0%,100%{box-shadow:0 0 0 0 rgba(224,20,63,.45);}50%{box-shadow:0 0 0 11px rgba(224,20,63,0);}}
+
   /* ---- section heading pattern ---- */
   .sec-head{margin-bottom:44px;}
   .sec-head .tag{margin-bottom:14px;}
@@ -293,6 +302,7 @@
     footer .wrap{flex-direction:column;align-items:flex-start;}
   }
 </style>
+<script>document.documentElement.classList.add('js');</script>
 
 <header class="site-header">
   <canvas class="aurora" id="aurora-header" aria-hidden="true"></canvas>
@@ -314,15 +324,15 @@
     <div class="hero-inner frame">
       <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
       <img class="brandmark" src="assets/img/logo.png" alt="Do Bolso pra Tela">
-      <div class="kicker tag"><span class="rec-dot"></span> Workshop presencial · Fortaleza</div>
-      <h1 class="display">Você é um ótimo profissional.<br>Mas seus vídeos <em>transmitem isso?</em></h1>
-      <p class="lede">Workshop presencial e 100% prático pra gravar vídeos com cara profissional usando o celular.</p>
-      <div class="chips">
+      <div class="kicker tag reveal" id="hero-kicker"><span class="rec-dot"></span> Workshop presencial · Fortaleza</div>
+      <h1 class="display" id="hero-title" aria-label="Você é um ótimo profissional. Mas seus vídeos transmitem isso?">Você é um ótimo profissional.<br>Mas seus vídeos <em>transmitem isso?</em></h1>
+      <p class="lede reveal" id="hero-lede">Workshop presencial e 100% prático pra gravar vídeos com cara profissional usando o celular.</p>
+      <div class="chips reveal" id="hero-chips">
         <span class="chip">🗓️ 12 de setembro</span>
         <span class="chip">🕑 14h às 19h</span>
         <span class="chip">📍 Av. Aguanambi, 760 – sala 101, Fortaleza</span>
       </div>
-      <div class="hero-ctas">
+      <div class="hero-ctas reveal" id="hero-ctas">
         <a class="btn" href="#investimento">Quero garantir minha vaga</a>
         <span class="note">Vagas limitadas</span>
       </div>
@@ -627,5 +637,82 @@
   } else {
     raf = requestAnimationFrame(animate);
   }
+})();
+</script>
+
+<script>
+(function(){
+  var title = document.getElementById('hero-title');
+  if(!title) return;
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var kicker = document.getElementById('hero-kicker');
+  var lede = document.getElementById('hero-lede');
+  var chips = document.getElementById('hero-chips');
+  var ctas = document.getElementById('hero-ctas');
+
+  function reveal(el, delay){
+    if(!el) return;
+    setTimeout(function(){ el.classList.add('revealed'); }, delay);
+  }
+
+  if(reduceMotion){
+    title.style.visibility = 'visible';
+    reveal(kicker, 0);
+    reveal(lede, 0);
+    reveal(chips, 0);
+    reveal(ctas, 0);
+    return;
+  }
+
+  var segments = [
+    {text:"Você é um ótimo profissional.", em:false},
+    {br:true},
+    {text:"Mas seus vídeos ", em:false},
+    {text:"transmitem isso?", em:true}
+  ];
+  var flat = [];
+  segments.forEach(function(seg){
+    if(seg.br){ flat.push({br:true}); return; }
+    for(var i=0;i<seg.text.length;i++){ flat.push({ch:seg.text[i], em:seg.em}); }
+  });
+
+  function render(upto){
+    var html = '', inEm = false;
+    for(var i=0;i<upto;i++){
+      var it = flat[i];
+      if(it.br){
+        if(inEm){ html += '</em>'; inEm = false; }
+        html += '<br>';
+        continue;
+      }
+      if(it.em && !inEm){ html += '<em>'; inEm = true; }
+      if(!it.em && inEm){ html += '</em>'; inEm = false; }
+      html += it.ch;
+    }
+    if(inEm) html += '</em>';
+    title.innerHTML = html + '<span class="caret"></span>';
+  }
+
+  reveal(kicker, 0);
+
+  setTimeout(function(){
+    title.innerHTML = '<span class="caret"></span>';
+    title.style.visibility = 'visible';
+    var idx = 0;
+    var typeStep = function(){
+      idx++;
+      render(idx);
+      if(idx < flat.length){
+        setTimeout(typeStep, 28);
+      } else {
+        title.querySelector('.caret').remove();
+        reveal(lede, 150);
+        reveal(chips, 320);
+        reveal(ctas, 460);
+      }
+    };
+    typeStep();
+  }, 300);
 })();
 </script>
