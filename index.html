@@ -179,7 +179,7 @@
   .hero h1{font-size:clamp(2.6rem,7vw,5.2rem);font-weight:500 !important;margin-bottom:26px;color:var(--text);}
   .hero p.lede{font-size:clamp(1.05rem,2vw,1.3rem);max-width:34em;color:var(--ash);margin-bottom:34px;}
   .chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:38px;}
-  .chip{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.05em;border:1px solid var(--ink-line);padding:9px 14px;display:inline-flex;gap:.6em;align-items:center;color:var(--text);}
+  .chip{font-family:var(--font-mono);font-size:1.02rem;font-weight:600;letter-spacing:.04em;border:1px solid var(--ink-line);background:var(--ink-raised);padding:13px 18px;display:inline-flex;gap:.6em;align-items:center;color:var(--text);}
   .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
   .hero-ctas .note{font-family:var(--font-mono);font-size:.74rem;color:var(--ash-dim);letter-spacing:.03em;}
 
@@ -264,6 +264,31 @@
   }
   .lightbox-close:hover{border-color:var(--blood-bright);color:var(--blood-bright);}
 
+  /* ---- Lead modal ---- */
+  .lead-modal{position:fixed;inset:0;background:rgba(10,9,11,.85);z-index:210;display:none;align-items:center;justify-content:center;padding:24px;}
+  .lead-modal.open{display:flex;}
+  .lead-modal-card{
+    position:relative;max-width:400px;width:100%;background:var(--ink-raised);
+    border:1px solid var(--ink-line);padding:36px 30px 30px;
+  }
+  .lead-modal-card .lightbox-close{top:14px;right:14px;width:36px;height:36px;font-size:1.2rem;}
+  .lead-modal-card .tag{margin-bottom:14px;}
+  .lead-modal-card h3{font-family:var(--font-display);font-weight:800;font-size:1.5rem;text-transform:uppercase;margin-bottom:10px;color:var(--text);}
+  .lead-modal-card p{color:var(--ash);font-size:.95rem;margin-bottom:24px;}
+  .lead-modal-card .plan-line{
+    font-family:var(--font-mono);font-size:.82rem;letter-spacing:.03em;color:var(--blood-bright);
+    margin-bottom:20px;display:block;
+  }
+  .lead-field{margin-bottom:16px;}
+  .lead-field label{display:block;font-family:var(--font-mono);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ash-dim);margin-bottom:8px;}
+  .lead-field input{
+    width:100%;background:var(--ink);border:1px solid var(--ink-line);color:var(--text);
+    padding:13px 14px;font-family:var(--font-body);font-size:.98rem;
+  }
+  .lead-field input:focus{outline:none;border-color:var(--blood-bright);}
+  .lead-modal-card .btn{width:100%;justify-content:center;margin-top:6px;}
+  .lead-modal-card .fine{font-family:var(--font-mono);font-size:.7rem;color:var(--ash-dim);text-align:center;margin-top:14px;}
+
   /* ---- Facilitadores ---- */
   .teach{padding:96px 0;border-top:1px solid var(--ink-line);}
   .teach .sec-head p{margin-top:14px;}
@@ -286,9 +311,14 @@
   .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
   .price-card{border:1px solid var(--ink-line);background:var(--ink-raised);padding:36px 30px;display:flex;flex-direction:column;}
   .price-card.featured{border-color:var(--blood-bright);box-shadow:0 0 0 1px var(--blood-bright);}
-  .price-card .plan-name{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ash-dim);margin-bottom:14px;}
-  .price-card .amount{font-family:var(--font-display);font-weight:800;font-size:3rem;margin-bottom:4px;color:var(--text);}
-  .price-card .per{font-size:.92rem;color:var(--ash-dim);margin-bottom:24px;}
+  .price-card .plan-name{font-family:var(--font-mono);font-size:.86rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ash-dim);margin-bottom:14px;}
+  .price-card .amount{font-family:var(--font-display);font-weight:800;font-size:3.6rem;margin-bottom:4px;color:var(--text);}
+  .price-card .per{font-size:1.02rem;color:var(--ash-dim);margin-bottom:24px;}
+  .price-when{
+    font-family:var(--font-mono);font-size:.92rem;letter-spacing:.03em;color:var(--text);
+    display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:40px;
+  }
+  .price-when span{border:1px solid var(--ink-line);background:var(--ink-raised);padding:10px 16px;display:inline-flex;gap:.5em;align-items:center;}
   .price-card ul{list-style:none;margin-bottom:28px;flex:1;}
   .price-card li{padding-left:1.3em;position:relative;margin-bottom:10px;font-size:.95rem;color:var(--ash);}
   .price-card li::before{content:"—";position:absolute;left:0;color:var(--blood-bright);}
@@ -550,6 +580,11 @@
       <div class="tag"><span class="rec-dot"></span> Investimento</div>
       <h2 class="display">Garanta sua vaga</h2>
     </div>
+    <div class="price-when">
+      <span>🗓️ 12 de setembro</span>
+      <span>🕑 14h às 19h</span>
+      <span>📍 Fortaleza</span>
+    </div>
     <div class="price-grid stagger-group">
       <div class="price-card reveal-io">
         <span class="plan-name">Individual</span>
@@ -560,7 +595,7 @@
           <li>Guia de compras de iluminação incluso</li>
           <li>Turma prática, sem enrolação</li>
         </ul>
-        <a class="btn" href="https://loja.infinitepay.io/carolystavares/tlf9600-workshop-do-bolso-pra-tela" target="_blank" rel="noopener">Quero minha vaga</a>
+        <a class="btn cta-checkout" href="https://loja.infinitepay.io/carolystavares/tlf9600-workshop-do-bolso-pra-tela" data-plan="Individual — R$277" rel="noopener">Quero minha vaga</a>
       </div>
       <div class="price-card featured reveal-io">
         <span class="plan-name">Dupla</span>
@@ -571,7 +606,7 @@
           <li>Ideal pra ir com sócio, colega ou parceiro de conteúdo</li>
           <li>Guia de compras de iluminação incluso</li>
         </ul>
-        <a class="btn" href="https://loja.infinitepay.io/carolystavares/izp7618--inscricao-dupla-workshop-do-bolso-pra-tel" target="_blank" rel="noopener">Garantir vaga em dupla</a>
+        <a class="btn cta-checkout" href="https://loja.infinitepay.io/carolystavares/izp7618--inscricao-dupla-workshop-do-bolso-pra-tel" data-plan="Dupla — R$460" rel="noopener">Garantir vaga em dupla</a>
       </div>
     </div>
   </div>
@@ -610,8 +645,8 @@
     <p class="lede">12 de setembro, das 14h às 19h — Fortaleza.</p>
     <p class="when">AV. AGUANAMBI, 760 — SALA 101</p>
     <div class="final-ctas">
-      <a class="btn" href="https://loja.infinitepay.io/carolystavares/tlf9600-workshop-do-bolso-pra-tela" target="_blank" rel="noopener">Vaga individual — R$277</a>
-      <a class="btn ghost" href="https://loja.infinitepay.io/carolystavares/izp7618--inscricao-dupla-workshop-do-bolso-pra-tel" target="_blank" rel="noopener">Vaga em dupla — R$460</a>
+      <a class="btn cta-checkout" href="https://loja.infinitepay.io/carolystavares/tlf9600-workshop-do-bolso-pra-tela" data-plan="Individual — R$277" rel="noopener">Vaga individual — R$277</a>
+      <a class="btn ghost cta-checkout" href="https://loja.infinitepay.io/carolystavares/izp7618--inscricao-dupla-workshop-do-bolso-pra-tel" data-plan="Dupla — R$460" rel="noopener">Vaga em dupla — R$460</a>
     </div>
   </div>
 </section>
@@ -836,5 +871,81 @@
   closeBtn.addEventListener('click', close);
   lightbox.addEventListener('click', function(e){ if(e.target === lightbox) close(); });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+})();
+</script>
+
+<div class="lead-modal" id="lead-modal" aria-hidden="true">
+  <div class="lead-modal-card">
+    <button class="lightbox-close" id="lead-modal-close" type="button" aria-label="Fechar">&times;</button>
+    <div class="tag"><span class="rec-dot"></span> Quase lá</div>
+    <h3>Antes de pagar</h3>
+    <span class="plan-line" id="lead-plan-line"></span>
+    <p>Deixa seu nome e WhatsApp pra garantirmos seu contato — daí você segue direto pro pagamento.</p>
+    <form id="lead-form">
+      <div class="lead-field">
+        <label for="lead-name">Nome</label>
+        <input type="text" id="lead-name" name="nome" required autocomplete="name">
+      </div>
+      <div class="lead-field">
+        <label for="lead-whats">WhatsApp (com DDD)</label>
+        <input type="tel" id="lead-whats" name="whatsapp" required autocomplete="tel" placeholder="85999998888">
+      </div>
+      <button type="submit" class="btn">Continuar para pagamento</button>
+      <p class="fine">Você vai abrir o WhatsApp pra confirmar e seguir pro pagamento.</p>
+    </form>
+  </div>
+</div>
+<script>
+(function(){
+  var modal = document.getElementById('lead-modal');
+  var closeBtn = document.getElementById('lead-modal-close');
+  var form = document.getElementById('lead-form');
+  var planLine = document.getElementById('lead-plan-line');
+  var nameInput = document.getElementById('lead-name');
+  var whatsInput = document.getElementById('lead-whats');
+  if(!modal || !form) return;
+
+  var OWNER_WHATSAPP = '5585988689091';
+  var pendingCheckoutUrl = null;
+  var pendingPlan = null;
+
+  function openModal(url, plan){
+    pendingCheckoutUrl = url;
+    pendingPlan = plan;
+    planLine.textContent = plan;
+    modal.classList.add('open');
+    setTimeout(function(){ nameInput.focus(); }, 50);
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+  }
+
+  document.querySelectorAll('.cta-checkout').forEach(function(link){
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      openModal(link.getAttribute('href'), link.dataset.plan || '');
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var nome = nameInput.value.trim();
+    var whats = whatsInput.value.trim();
+    if(!nome || !whats) return;
+
+    var msg = 'Novo interessado no Do Bolso pra Tela!\nNome: ' + nome + '\nWhatsApp: ' + whats + '\nPlano: ' + pendingPlan;
+    var waUrl = 'https://wa.me/' + OWNER_WHATSAPP + '?text=' + encodeURIComponent(msg);
+    window.open(waUrl, '_blank');
+
+    if(pendingCheckoutUrl){
+      window.location.href = pendingCheckoutUrl;
+    }
+    closeModal();
+    form.reset();
+  });
 })();
 </script>
