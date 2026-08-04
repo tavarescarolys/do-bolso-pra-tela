@@ -891,7 +891,7 @@
         <input type="tel" id="lead-whats" name="whatsapp" required autocomplete="tel" placeholder="85999998888">
       </div>
       <button type="submit" class="btn">Continuar para pagamento</button>
-      <p class="fine">Você vai abrir o WhatsApp pra confirmar e seguir pro pagamento.</p>
+      <p class="fine">Seus dados ficam salvos com a gente. Depois disso é só o pagamento.</p>
     </form>
   </div>
 </div>
@@ -905,7 +905,9 @@
   var whatsInput = document.getElementById('lead-whats');
   if(!modal || !form) return;
 
-  var OWNER_WHATSAPP = '5585988689091';
+  var GFORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSepJfpr8KK9Z1LhHdq0_9METQvB56Ru-MHO_ywjWSHFkAlHEQ/formResponse';
+  var GFORM_FIELD_NOME = 'entry.699434439';
+  var GFORM_FIELD_WHATS = 'entry.1246516077';
   var pendingCheckoutUrl = null;
   var pendingPlan = null;
 
@@ -937,15 +939,17 @@
     var whats = whatsInput.value.trim();
     if(!nome || !whats) return;
 
-    var msg = 'Novo interessado no Do Bolso pra Tela!\nNome: ' + nome + '\nWhatsApp: ' + whats + '\nPlano: ' + pendingPlan;
-    var waUrl = 'https://wa.me/' + OWNER_WHATSAPP + '?text=' + encodeURIComponent(msg);
-    window.open(waUrl, '_blank');
+    var body = new URLSearchParams();
+    body.append(GFORM_FIELD_NOME, nome);
+    body.append(GFORM_FIELD_WHATS, whats + ' — ' + pendingPlan);
 
+    fetch(GFORM_ACTION, { method: 'POST', mode: 'no-cors', keepalive: true, body: body }).catch(function(){});
+
+    closeModal();
+    form.reset();
     if(pendingCheckoutUrl){
       window.location.href = pendingCheckoutUrl;
     }
-    closeModal();
-    form.reset();
   });
 })();
 </script>
