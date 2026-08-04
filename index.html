@@ -296,14 +296,14 @@
   .facilitator-row.reverse{grid-template-columns:auto 1fr;}
   .facilitator-row:last-child{border-bottom:none;padding-bottom:0;}
   .facilitator-row:first-child{padding-top:0;}
-  .facil-photo img{width:260px;max-width:100%;aspect-ratio:4/5;object-fit:cover;display:block;border:1px solid var(--ink-line);}
+  .facil-photo img{width:300px;max-width:100%;aspect-ratio:4/5;object-fit:cover;display:block;border:1px solid var(--ink-line);}
   .facil-text .role{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--blood-bright);margin-top:10px;margin-bottom:18px;display:block;}
   .facil-text h3{font-family:var(--font-feature);font-weight:800;font-size:clamp(2.1rem,5vw,3.2rem);line-height:.96;color:var(--text);}
   .facil-text p.bio{color:var(--ash);font-size:1rem;max-width:34em;}
   @media (max-width:700px){
     .facilitator-row,.facilitator-row.reverse{grid-template-columns:1fr;gap:22px;}
     .facil-photo{order:-1;}
-    .facil-photo img{width:195px;}
+    .facil-photo img{width:225px;}
   }
 
   /* ---- Pricing ---- */
@@ -316,7 +316,7 @@
   .price-card .per{font-size:1.02rem;color:var(--ash-dim);margin-bottom:24px;}
   .price-when{
     font-family:var(--font-mono);font-size:.92rem;letter-spacing:.03em;color:var(--text);
-    display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:40px;
+    display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-start;margin-bottom:40px;
   }
   .price-when span{border:1px solid var(--ink-line);background:var(--ink-raised);padding:10px 16px;display:inline-flex;gap:.5em;align-items:center;}
   .price-card ul{list-style:none;margin-bottom:28px;flex:1;}
