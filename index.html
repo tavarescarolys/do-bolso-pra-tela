@@ -204,11 +204,13 @@
   .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
   .hero-ctas .note{font-family:var(--font-mono);font-size:.74rem;color:var(--ash-dim);letter-spacing:.03em;}
   .discount-badge{
-    display:inline-flex;align-items:center;gap:.5em;
-    font-family:var(--font-mono);font-size:.8rem;font-weight:600;letter-spacing:.03em;
-    background:rgba(224,20,63,.12);border:1px solid var(--blood-bright);color:var(--text);
-    padding:10px 16px;margin-bottom:22px;
+    display:inline-flex;align-items:center;gap:.6em;
+    font-family:var(--font-mono);font-size:1rem;font-weight:700;letter-spacing:.02em;text-transform:uppercase;
+    background:var(--blood);border:1px solid var(--blood-bright);color:#fff;
+    padding:15px 22px;margin-bottom:26px;
+    box-shadow:0 0 0 3px rgba(224,20,63,.18);
   }
+  @media (max-width:520px){ .discount-badge{font-size:.82rem;padding:13px 16px;} }
 
   /* ---- Hero entrance animation (progressive enhancement, JS-gated) ---- */
   .js .hero #hero-title{visibility:hidden;}
@@ -285,16 +287,37 @@
 
   /* ---- Social proof ---- */
   .proof{padding:100px 0 110px;}
+  .testi-carousel{position:relative;padding:0 56px;}
   .testi-grid{
     display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;
-    padding:4px 4px 14px;margin:0 -24px;padding-left:24px;padding-right:24px;
+    scrollbar-width:none;-ms-overflow-style:none;
     -webkit-overflow-scrolling:touch;
   }
-  .testi-card{scroll-snap-align:start;flex:0 0 auto;width:250px;}
+  .testi-grid::-webkit-scrollbar{display:none;}
+  .testi-card{scroll-snap-align:start;flex:0 0 calc((100% - 40px) / 3);min-width:0;}
   .testi-card .frame{background:var(--ink-raised);padding:6px;border:1px solid var(--ink-line);display:flex;align-items:center;justify-content:center;height:100%;}
   .testi-card img{width:100%;height:auto;display:block;cursor:zoom-in;transition:opacity .15s ease;}
-  .testi-scroll-hint{text-align:center;margin-top:4px;font-family:var(--font-mono);font-size:.74rem;letter-spacing:.04em;color:var(--ash-dim);}
   .testi-card img:hover{opacity:.88;}
+  .testi-arrow{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:44px;height:44px;border-radius:50%;
+    background:var(--ink-raised);border:1px solid var(--ink-line);color:var(--text);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    transition:border-color .15s ease,color .15s ease,opacity .15s ease;
+    z-index:2;
+  }
+  .testi-arrow svg{width:18px;height:18px;}
+  .testi-arrow:hover{border-color:var(--blood-bright);color:var(--blood-bright);}
+  .testi-arrow:disabled{opacity:.3;cursor:default;}
+  .testi-arrow:disabled:hover{border-color:var(--ink-line);color:var(--text);}
+  .testi-arrow.prev{left:0;}
+  .testi-arrow.next{right:0;}
+  @media (max-width:640px){
+    .testi-carousel{padding:0 44px;}
+    .testi-card{flex:0 0 100%;}
+    .testi-arrow{width:36px;height:36px;}
+    .testi-arrow svg{width:15px;height:15px;}
+  }
   .testi-card video{width:100%;display:block;background:#000;}
 
   /* ---- Lightbox ---- */
@@ -400,9 +423,6 @@
     .pain-grid,.moments{grid-template-columns:1fr;}
     .hero{padding:calc(var(--header-h) + 40px) 0 70px;}
     .hero-inner{padding:26px 18px 28px;}
-  }
-  @media (max-width:640px){
-    .testi-card{width:220px;}
   }
   @media (max-width:520px){
     footer .wrap{flex-direction:column;align-items:flex-start;}
@@ -586,6 +606,10 @@
       <h2 class="display">Quem participou conta como foi</h2>
       <p class="stat-line">3 edições, 100% de aprovação.</p>
     </div>
+    <div class="testi-carousel">
+    <button class="testi-arrow prev" id="testi-prev" type="button" aria-label="Depoimento anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
     <div class="testi-grid stagger-group">
       <figure class="testi-card reveal-io">
         <div class="frame"><span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
@@ -638,7 +662,10 @@
         </div>
       </figure>
     </div>
-    <p class="testi-scroll-hint">← arraste pros lados →</p>
+    <button class="testi-arrow next" id="testi-next" type="button" aria-label="Próximo depoimento">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    </div>
   </div>
 </section>
 
@@ -947,6 +974,37 @@
   closeBtn.addEventListener('click', close);
   lightbox.addEventListener('click', function(e){ if(e.target === lightbox) close(); });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+})();
+</script>
+
+<script>
+(function(){
+  var track = document.querySelector('.testi-grid');
+  var prevBtn = document.getElementById('testi-prev');
+  var nextBtn = document.getElementById('testi-next');
+  if(!track || !prevBtn || !nextBtn) return;
+
+  function itemsPerView(){ return window.innerWidth <= 640 ? 1 : 3; }
+
+  function scrollByPage(dir){
+    var card = track.querySelector('.testi-card');
+    if(!card) return;
+    var gap = 20;
+    var amount = (card.getBoundingClientRect().width + gap) * itemsPerView() * dir;
+    track.scrollBy({left: amount, behavior: 'smooth'});
+  }
+
+  function updateArrows(){
+    var max = track.scrollWidth - track.clientWidth;
+    prevBtn.disabled = track.scrollLeft <= 4;
+    nextBtn.disabled = track.scrollLeft >= max - 4;
+  }
+
+  prevBtn.addEventListener('click', function(){ scrollByPage(-1); });
+  nextBtn.addEventListener('click', function(){ scrollByPage(1); });
+  track.addEventListener('scroll', updateArrows);
+  window.addEventListener('resize', updateArrows);
+  updateArrows();
 })();
 </script>
 
