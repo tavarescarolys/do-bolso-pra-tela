@@ -203,6 +203,12 @@
   .chip{font-family:var(--font-mono);font-size:1.02rem;font-weight:600;letter-spacing:.04em;border:1px solid var(--ink-line);background:var(--ink-raised);padding:13px 18px;display:inline-flex;gap:.6em;align-items:center;color:var(--text);}
   .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
   .hero-ctas .note{font-family:var(--font-mono);font-size:.74rem;color:var(--ash-dim);letter-spacing:.03em;}
+  .discount-badge{
+    display:inline-flex;align-items:center;gap:.5em;
+    font-family:var(--font-mono);font-size:.8rem;font-weight:600;letter-spacing:.03em;
+    background:rgba(224,20,63,.12);border:1px solid var(--blood-bright);color:var(--text);
+    padding:10px 16px;margin-bottom:22px;
+  }
 
   /* ---- Hero entrance animation (progressive enhancement, JS-gated) ---- */
   .js .hero #hero-title{visibility:hidden;}
@@ -223,6 +229,7 @@
   .sec-head .tag{margin-bottom:14px;}
   .sec-head h2{font-size:clamp(1.8rem,4vw,2.7rem);text-transform:none;}
   .sec-head p{margin-top:14px;max-width:38em;color:var(--ash);font-size:1.05rem;}
+  .stat-line{margin-top:14px;font-family:var(--font-display);font-weight:700;font-size:1.15rem;color:var(--text);}
 
   /* ---- Pain section ---- */
   .pain{padding:96px 0;}
@@ -278,9 +285,15 @@
 
   /* ---- Social proof ---- */
   .proof{padding:100px 0 110px;}
-  .testi-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:640px;margin:0 auto;}
-  .testi-card .frame{background:var(--ink-raised);padding:6px;border:1px solid var(--ink-line);display:flex;align-items:center;justify-content:center;}
+  .testi-grid{
+    display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding:4px 4px 14px;margin:0 -24px;padding-left:24px;padding-right:24px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .testi-card{scroll-snap-align:start;flex:0 0 auto;width:250px;}
+  .testi-card .frame{background:var(--ink-raised);padding:6px;border:1px solid var(--ink-line);display:flex;align-items:center;justify-content:center;height:100%;}
   .testi-card img{width:100%;height:auto;display:block;cursor:zoom-in;transition:opacity .15s ease;}
+  .testi-scroll-hint{text-align:center;margin-top:4px;font-family:var(--font-mono);font-size:.74rem;letter-spacing:.04em;color:var(--ash-dim);}
   .testi-card img:hover{opacity:.88;}
   .testi-card video{width:100%;display:block;background:#000;}
 
@@ -389,7 +402,7 @@
     .hero-inner{padding:26px 18px 28px;}
   }
   @media (max-width:640px){
-    .testi-grid{grid-template-columns:1fr;max-width:340px;}
+    .testi-card{width:220px;}
   }
   @media (max-width:520px){
     footer .wrap{flex-direction:column;align-items:flex-start;}
@@ -424,6 +437,7 @@
         <span class="chip">🗓️ Próxima turma em breve</span>
         <span class="chip">📍 Fortaleza</span>
       </div>
+      <div class="discount-badge reveal" id="hero-discount">🎁 Desconto exclusivo pra quem entrar na lista de espera</div>
       <div class="hero-ctas reveal" id="hero-ctas">
         <a class="btn cta-waitlist" href="https://forms.gle/P1E2NVFELgjTFsA19" target="_blank" rel="noopener">Entrar na lista de espera</a>
         <span class="note">É rápido e sem compromisso</span>
@@ -554,7 +568,7 @@
       <div class="video-card reveal-io">
         <div class="frame">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <video controls playsinline preload="metadata" src="assets/video/recap-ultima-edicao.mp4"></video>
+          <video controls playsinline preload="metadata" poster="assets/img/recap-poster.jpg" src="assets/video/recap-ultima-edicao.mp4"></video>
           <button class="play-overlay" type="button" aria-label="Reproduzir vídeo">
             <span class="circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
           </button>
@@ -570,6 +584,7 @@
     <div class="sec-head reveal-io">
       <div class="tag"><span class="rec-dot"></span> O que falam do nosso workshop</div>
       <h2 class="display">Quem participou conta como foi</h2>
+      <p class="stat-line">3 edições, 100% de aprovação.</p>
     </div>
     <div class="testi-grid stagger-group">
       <figure class="testi-card reveal-io">
@@ -623,6 +638,7 @@
         </div>
       </figure>
     </div>
+    <p class="testi-scroll-hint">← arraste pros lados →</p>
   </div>
 </section>
 
@@ -661,7 +677,7 @@
       <h2 class="display">Seja avisado da próxima turma</h2>
     </div>
     <div class="waitlist-card reveal-io">
-      <p>As vagas da última edição já esgotaram. Deixa seu contato que a gente te avisa assim que abrirmos a próxima turma — com prioridade pra quem já tá na lista.</p>
+      <p>As vagas da última edição já esgotaram. Deixa seu contato que a gente te avisa assim que abrirmos a próxima turma — com prioridade e desconto exclusivo pra quem já tá na lista.</p>
       <a class="btn cta-waitlist" href="https://forms.gle/P1E2NVFELgjTFsA19" target="_blank" rel="noopener">Entrar na lista de espera</a>
     </div>
   </div>
@@ -697,7 +713,7 @@
 <section class="final-cta">
   <div class="wrap reveal-io">
     <h2 class="display">Não fique de fora<br>da próxima turma.</h2>
-    <p class="lede">Workshop presencial em Fortaleza.</p>
+    <p class="lede">Workshop presencial em Fortaleza. Entre na lista de espera e garanta desconto exclusivo.</p>
     <div class="final-ctas">
       <a class="btn cta-waitlist" href="https://forms.gle/P1E2NVFELgjTFsA19" target="_blank" rel="noopener">Entrar na lista de espera</a>
     </div>
@@ -792,6 +808,7 @@
   var kicker = document.getElementById('hero-kicker');
   var lede = document.getElementById('hero-lede');
   var chips = document.getElementById('hero-chips');
+  var discount = document.getElementById('hero-discount');
   var ctas = document.getElementById('hero-ctas');
 
   function reveal(el, delay){
@@ -804,6 +821,7 @@
     reveal(kicker, 0);
     reveal(lede, 0);
     reveal(chips, 0);
+    reveal(discount, 0);
     reveal(ctas, 0);
     return;
   }
@@ -852,7 +870,8 @@
         title.querySelector('.caret').remove();
         reveal(lede, 150);
         reveal(chips, 320);
-        reveal(ctas, 460);
+        reveal(discount, 420);
+        reveal(ctas, 500);
       }
     };
     typeStep();
